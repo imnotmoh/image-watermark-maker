@@ -6,13 +6,12 @@ from skimage.transform import resize
 from PIL import Image, ImageTk
 
 image =Image
-
 window = Tk()
 window.title("image water marker")
 window.config(padx=100,pady=100)
 img = np.array([0])
 water_img = np.array([0])
-
+# check boxes for picture upload
 checked_state1 = IntVar()
 checkbutton = Checkbutton(text="status",variable=checked_state1)
 checkbutton.grid(column=1,row=2)
@@ -21,13 +20,15 @@ checked_state2 = IntVar()
 checkbutton = Checkbutton(text="status",variable=checked_state2)
 checkbutton.grid(column=2,row=2)
 
-
+# displays the image if both images have been updated
 def show():
     global img
     global water_img
     watsec = img[50:150, -150:-50, :]
     if water_img.shape != (1,) and img.shape != (1,):
+        # resize the watermark image
         small_waterimg = resize(water_img, (100, 100))
+        # checks for transparent part of the image
         for i in range(len(small_waterimg)):
             for b in range(len(small_waterimg[i])):
                 if small_waterimg[i,b].any() == np.array([0, 0, 0, 0]).any():
@@ -38,6 +39,7 @@ def show():
         plt.imshow(img)
         plt.show()
 
+# open image to be watermarked
 def open_image():
     global img
     global water_img
@@ -46,6 +48,8 @@ def open_image():
     checked_state1.set(1)
     show()
 
+
+# open watermark image
 def open_water():
     global img
     global water_img
@@ -54,7 +58,7 @@ def open_water():
     checked_state2.set(1)
     show()
 
-
+# tkinter ui
 upimg_button = Button(text="upload Image", command=open_image)
 upimg_button.grid(column=1,row=1)
 upwat_button = Button(text="upload water mark", command=open_water)
