@@ -25,12 +25,13 @@ checkbutton.grid(column=2,row=2)
 def show():
     global img
     global water_img
+    watsec = img[50:150, -150:-50, :]
     if water_img.shape != (1,) and img.shape != (1,):
         small_waterimg = resize(water_img, (100, 100))
-        for i in small_waterimg:
-            for b in i:
-                if b.any() == np.array([0, 0, 0, 0]).any():
-                    b += [1, 1, 1, 1]
+        for i in range(len(small_waterimg)):
+            for b in range(len(small_waterimg[i])):
+                if small_waterimg[i,b].any() == np.array([0, 0, 0, 0]).any():
+                    small_waterimg[i,b] += watsec[i,b]
 
         img = np.array(img) / 255
         img[50:150, -150:-50, :] = small_waterimg
